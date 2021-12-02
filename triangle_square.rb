@@ -1,5 +1,5 @@
 puts "Вычисление площади треугольника"
-puts "Задайте сторону a"
+puts "Задайте сторону a "
 a = gets.chomp.to_f
 puts "Задайте высоту h"
 h = gets.chomp.to_f
