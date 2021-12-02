@@ -6,5 +6,5 @@ perfect_weight = (height - 110) * 1.15
 if perfect_weight > 0
 puts "#{name}, Ваш оптимальный вес #{perfect_weight}"
 else
-puts "#{name}, Ваш вес уже оптимальный #{perfect_weight}"
+puts "#{name}, Ваш вес уже оптимальный."
 end
