@@ -6,21 +6,21 @@ print "Задайте сторону c = "
 c = gets.chomp.to_f
 #определяем самую длинную сторону
 if (a > b) && (a > c)
-is_rectangular = a**2 == (b**2 + c**2)
+  is_rectangular = a**2 == (b**2 + c**2)
 elsif (b > a) && (b > c)
-is_rectangular = b**2 == (a**2 + c**2)
+  is_rectangular = b**2 == (a**2 + c**2)
 elsif (c > a) && (c > b)
-is_rectangular = c**2 == (b**2 + a**2)
+  is_rectangular = c**2 == (b**2 + a**2)
 end
 
 if (a == b) && (b == c)
-puts "Треугольник со сторонами a=#{a} b=#{b} c=#{c} равносторонний"
+  puts "Треугольник со сторонами a=#{a} b=#{b} c=#{c} равносторонний"
 elsif (a==b) || (b == c) || (c == a) 
-print "Треугольник со сторонами a=#{a} b=#{b} c=#{c} равнобедренный"  
-puts " и прямоугольный" if is_rectangular
-puts if !is_rectangular
+  print "Треугольник со сторонами a=#{a} b=#{b} c=#{c} равнобедренный"  
+  puts " и прямоугольный" if is_rectangular
+  puts if !is_rectangular
 elsif is_rectangular
-puts "Треугольник со сторонами a=#{a} b=#{b} c=#{c} прямоугольный"  
+  puts "Треугольник со сторонами a=#{a} b=#{b} c=#{c} прямоугольный"  
 elsif !is_rectangular
-puts "Треугольник со сторонами a=#{a} b=#{b} c=#{c} не является прямоугольным, равнобедренным, или равносторонним" 
+  puts "Треугольник со сторонами a=#{a} b=#{b} c=#{c} не является прямоугольным, равнобедренным, или равносторонним" 
 end
