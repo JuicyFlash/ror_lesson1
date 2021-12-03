@@ -7,4 +7,4 @@ if perfect_weight > 0
   puts "#{name}, Ваш оптимальный вес #{perfect_weight}"
 else
   puts "#{name}, Ваш вес уже оптимальный."
-endы
+end
