@@ -6,4 +6,5 @@ symbols_string = "аиеёоуыэюя"
 for i in 0 .. symbols_string.length
   result_hash[symbols_string[i].to_sym] = source_string.index(symbols_string[i])+1 unless source_string.index(symbols_string[i]).nil?   
 end
-result_hash.each{|smb, ind| puts "#{smb} - #{ind}"} 
+result_hash.each{|smb, ind| puts "#{smb} - #{ind}"}
+ 
