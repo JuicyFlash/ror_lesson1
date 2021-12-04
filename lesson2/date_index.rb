@@ -33,6 +33,7 @@ elsif user_year % 4 == 0
   month[2] = 29
 end
 #Вычисляем сумму всех дней месяцев до указанного - порядковый номер
-total_index = 0
+total_index = user_day
 month.select{|x,y| x < user_month}.each{|m_index, d_index| total_index += d_index}
-puts "Порядковый номер числа в году = #{total_index + user_day}"
+puts "Порядковый номер числа в году = #{total_index}"
+
