@@ -89,4 +89,3 @@
 	 @prev_station
    end   
  end
- 
