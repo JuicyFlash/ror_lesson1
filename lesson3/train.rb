@@ -14,6 +14,7 @@
    attr_reader :vans_count
    attr_reader :route
    attr_reader :current_station
+   attr_reader :train_type
 #  attr_reader :next_station геттер переопределён
 #  attr_reader :prev_station
    
