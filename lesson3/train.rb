@@ -46,8 +46,7 @@ class Train
   def set_route (route)
     @route = route
     @current_station = @route.stations[0]
-  @current_station.recive_train(self)
-  #self.recalc_stations
+    @current_station.recive_train(self)
   end
    
   #Перемещение    
@@ -66,7 +65,7 @@ class Train
       self.prev_station.recive_train(self)
       @current_station = self.prev_station
     end
-   end
+  end
    
   #Следующая/предыдущая станция
   def next_station
