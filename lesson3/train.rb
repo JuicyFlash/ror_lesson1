@@ -12,26 +12,27 @@
  class Train
    attr_reader :speed
    attr_reader :vans_count
-   attr_reader :route
    attr_reader :current_station
-   attr_reader :train_type
-#  attr_reader :next_station геттер переопределён
-#  attr_reader :prev_station
+   attr_reader :type
+   attr_reader :route
    
-   def initialize (train_number, train_type, vans_count)
-     @train_number = train_number
-	 @train_type = train_type
+   def initialize (number, type, vans_count)
+     @number = number
+	 @type = type
 	 @vans_count = vans_count
      @speed = 0	 
    end
+   
    # Торможение до нуля
    def speed_down     
 	@speed = 0 
    end
+   
    # Набор скорости
    def speed_up (speed)
     @speed += speed
    end
+   
    # Добавление вагонов в состав
    def hook_van
      vans_count += 1 if @speed == 0
@@ -40,52 +41,41 @@
    def unhook_van
      vans_count -= 1 if (@speed == 0) && (@vans_count > 0 )
    end
+   
    # Установка маршрута
    def set_route (route)
-    @route = route.get_route
-    @current_station = @route[0]
+    @route = route
+    @current_station = @route.stations[0]
 	@current_station.recive_train(self)
-	self.recalc_stations
+	#self.recalc_stations
    end
-   # Перемещение 
-   # Когда поезд находится в конечной/начальной станции текущая станция = следующая/предыдущая станция
-   # При перемещении у текущей станции трегрится команда на отправку текущего поезда, а у следующей/предыдущей станции на получение
-   # Перерасчёт станций до перемещения, атк как маршрут мог измениться
-   # Перерасчёт станций после перемещения 
+   
+   # Перемещение    
+   # При перемещении у текущей станции трегрится команда на отправку текущего поезда, а у следующей/предыдущей станции на получение 
    def move_next_station
-     if @route.index(@current_station) < @route.length
-	   self.recalc_stations	
+     unless self.next_station.nil?
        @current_station.send_train(self)
-	   @next_station.recive_train(self)
-       @current_station = @route[@route.index(@current_station) + 1]
-       self.recalc_stations	   
+	   self.next_station.recive_train(self)
+	   @current_station = self.next_station
 	 end
-   end   
+   end
+   
    def move_prev_station
-     if @route.index(@current_station) > 0
-	   self.recalc_stations	
+     unless self.prev_station.nil?
        @current_station.send_train(self)
-	   @prev_station.recive_train(self)
-       @current_station = @route[@route.index(@current_station) - 1]
-       self.recalc_stations	   
-	 end     
+	   self.prev_station.recive_train(self)
+	   @current_station = self.prev_station
+	 end   
    end
-   def recalc_stations   
-   # Вспомогательная функия - вычисляет следующую и предыдущую станцию в маршруте
-     idx = @route.index(@current_station)
-	 @next_station = @route[idx + 1] if idx < @route.length 
-     @next_station = current_station if @route.index(@current_station) == @route.length
-	 
-	 @prev_station = @route[@route.index(@current_station) - 1] if @route.index(@current_station) > 0	
-	 @prev_station = @current_station if @route.index(@current_station) == 0	 
-	 
-   end
+   
+   # Следующая/предыдущая станция
    def next_station
-     self.recalc_stations
-	 @next_station
+     idx = @route.stations.index(@current_station)
+	 @route.stations[idx + 1] unless @current_station == @route.last_station      
    end
+   
    def prev_station
-     self.recalc_stations
-	 @prev_station
+     idx = @route.stations.index(@current_station)
+     @route.stations[idx - 1] unless @current_station == @route.first_station
    end   
  end
