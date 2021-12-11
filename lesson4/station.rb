@@ -10,7 +10,7 @@ class Station
   
   def initialize (name)
     @name = name
-  @trains = []
+    @trains = []
   end
   
   def recive_train (train)

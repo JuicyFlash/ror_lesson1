@@ -18,7 +18,7 @@ class Route
   
   def remove_station (station)
     #Удаляем станцию из маршрута. Не допускается удаление станции, если на ней находится поезд с этим маршрутом. Так же запрещаем удалять начальную и конечную станцию
-    @stations.delete(station) if !(station.trains.map{|tr| tr.route}.include?(self)) && ((station !=@start_station) && (station != @start_station))
+    @stations.delete(station) if !(station.trains.map{|tr| tr.route}.include?(self)) && ((station != first_station) && (station != last_station))
   end
   
   def print_stations

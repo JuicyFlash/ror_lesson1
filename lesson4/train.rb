@@ -11,12 +11,12 @@
 #Возвращать предыдущую станцию, текущую, следующую, на основе маршрута
 class Train
   attr_reader :speed
-  attr_reader :vans_count
+  attr_reader :wagons
   attr_reader :current_station
   attr_reader :type
   attr_reader :route
   
-  def initialize (number, type, vans_count)
+  def initialize (number, type)
     @number = number
     @type = type
     @vans_count = vans_count
@@ -34,12 +34,12 @@ class Train
   end
    
   #Добавление вагонов в состав
-  def hook_van
-    vans_count += 1 if @speed == 0
+  def hook_van (wagon)
+    wagons << wagon if @speed == 0
   end
    
-  def unhook_van
-    vans_count -= 1 if (@speed == 0) && (@vans_count > 0 )
+  def unhook_van(wagon)
+    wagons.delete(wagon) if (@speed == 0) && (@vans_count > 0 )
   end
    
   #Установка маршрута
