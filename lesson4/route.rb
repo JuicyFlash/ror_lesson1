@@ -24,12 +24,12 @@ class Route
   def print_stations
     #Выводим список всех станций по-порядку от начальной до конечной
     index = 0 
-    lght = @stations.length
-    puts ("Маршрут:")
+    lgth = @stations.length
+    #  puts ("Маршрут:")
     @stations.map{|st| 
     print "#{st.name}(#{index+=1})" 
-    print " -> " if index < lght
-    }
+    print " -> " if index < lgth
+    }.to_s
     puts
   end 
   
