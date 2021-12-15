@@ -10,5 +10,4 @@ class PassengerWagon < Wagon
     "Пассажирский"
   end
 
-  public_class_method :new
 end
