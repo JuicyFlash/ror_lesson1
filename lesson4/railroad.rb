@@ -40,7 +40,10 @@ class Railroad
   end
 
   #Добавление вагона
-  def add_wagon(wag_idx)
+  def add_wagon
+    puts
+    print "Укажите типа вагона:   #{print_wagon_types} "
+    wag_idx = gets.chomp.to_i
     if !(@available_wagons_types[wag_idx].nil?)
       @wagons << @available_wagons_types[wag_idx].new
       puts "#{@available_wagons_types[wag_idx].print_type} вагон добавлен"
@@ -50,7 +53,10 @@ class Railroad
   end
 
   #Удаление вагона
-  def remove_wagon (wag_idx)
+  def remove_wagon
+    print_wagons
+    print "Выберите вагон: "
+    wag_idx = gets.chomp.to_i
     @wagons.delete(@wagons[wag_idx])
   end
 
@@ -64,7 +70,10 @@ class Railroad
   end
 
   #Добавление станции
-  def add_station (param_name)
+  def add_station
+    puts
+    print "Введите название станции: "
+    param_name = gets.chomp
     unless  @stations.map { |st| st.name }.include?(param_name)
       @stations << Station.new(param_name)
       puts"Станция #{param_name} добавлена"
@@ -74,14 +83,20 @@ class Railroad
   end
 
   #Удаление станции
-  def remove_station (stat_idx)
+  def remove_station
+    print_stations
+    print "Выберите станцию: "
+    stat_idx = gets.chomp.to_i
     unless @stations[stat_idx].nil?
       puts "Станция удалена #{ @stations[stat_idx].name}"
       @stations.delete(@stations[stat_idx])
     end
   end
 
-  def print_station_trains (stat_idx)
+  def print_station_trains
+    puts "Выберите станцию"
+    print_stations
+    stat_idx = gets.chomp.to_i
     unless @stations[stat_idx].trains.nil?
       @stations[stat_idx].trains_by_type(:cargo).each{|tr|
       print "#{tr.number}  #{tr.print_type}"
@@ -95,18 +110,44 @@ class Railroad
   end
 
   #Добавление поезда
-  def add_train (param_type, param_number)
-    @trains << CargoTrain.new(param_number) if param_type == 0
-    @trains << PassengerTrain.new(param_number) if param_type == 1
+  def add_train
+    print "Укажите типа поезда 0 - грузовой 1 - пассажирский: "
+    param_type = gets.chomp.to_i
+    puts
+    print "Задайте номер поезда: "
+    param_number = gets.chomp
+    if param_type == 0
+      @trains << CargoTrain.new(param_number)
+    elsif param_type == 1
+      @trains << PassengerTrain.new(param_number)
+    else
+      puts "Некорректно указан тип поезда"
+    end
+
   end
 
   #Установка маршрута поезду
-  def set_route_train (route_idx, train_idx)
+  def set_route_train
+    puts "Выберите поезд"
+    print_trains
+    train_idx = gets.chomp.to_i
+    puts "Выберите маршрут"
+    print_routes
+    route_idx = gets.chomp.to_i
     @trains[train_idx].set_route(@routes[route_idx]) unless @trains[train_idx].nil? && @routes[route_idx].nil?
   end
 
   #Перемещение поезда
-  def move_train (param_move, train_idx)
+  def move_train
+    puts "Выберите поезд"
+    print_trains
+    train_idx = gets.chomp.to_i
+    puts "0 - переместить на предыдущую стануию 1 - переместить на следующую станцию"
+    print_prev_train_station(train_idx)
+    print_current_train_station(train_idx)
+    .print_next_train_station(train_idx)
+    puts
+    param_move = gets.chomp.to_i
     unless @trains[train_idx].nil?
       if param_move == 0
         @trains[train_idx].move_prev_station
@@ -148,40 +189,76 @@ class Railroad
   end
 
   #Удаление поезда
-  def remove_train (train_idx)
+  def remove_train
+    puts "Выберите поезд для удаления"
+    print_trains
+    train_idx = gets.chomp.to_i
     unless @trains[train_idx].nil?
       puts "Поезд удалён #{ @trains[train_idx].number}"
       @trains.delete(@trains[train_idx])
     end
   end
 
-  def edit_train_hook_wagon (wagon_idx, train_idx)
+  def edit_train_hook_wagon
+    puts "Выберите поезд"
+    print_trains
+    train_idx = gets.chomp.to_i
+    puts "Выберите вагон"
+    print_wagons
+    wagon_idx = gets.chomp.to_i
     @trains[train_idx].hook_wagon(@wagons[wagon_idx]) unless @trains[train_idx].nil? && @wagons[wagon_idx].nil?
   end
 
-  def edit_train_unhook_wagon (wagon_idx, train_idx)
+  def edit_train_unhook_wagon
+    puts "Выберите поезд"
+    print_stations
+    train_idx = gets.chomp.to_i
+    puts "Выберите вагон"
+    print_train_wagons(train_idx)
+    wagon_idx = gets.chomp.to_i
     @trains[train_idx].unhook_wagon(@wagons[wagon_idx]) unless @trains[train_idx].nil? && @wagons[wagon_idx].nil?
   end
 
   #Добавление маршрута
-  def add_route (firs_idx, last_idx)
+  def add_route
+    puts "Задайте начальную и конечную станцию маршрута"
+    action_menu_print(:stations)
+    print "Начальная станция:  "
+    firs_idx = gets.chomp.to_i
+    print "Конечная станция:  "
+    last_idx = gets.chomp.to_i
     unless (@stations[firs_idx].nil?) && (@stations[last_idx].nil?)
       @routes << Route.new(@stations[firs_idx], @stations[last_idx])
     end
   end
 
   #Добавление станции в маршрут
-  def edit_route_add_station (station_idx, route_idx)
+  def edit_route_add_station
+    puts "Выберите маршрут"
+    print_routes
+    route_idx = gets.chomp.to_i
+    puts "Выберите станцию для добавления"
+    print_stations
+    station_idx = gets.chomp.to_i
     @routes[route_idx].add_station(@stations[station_idx]) unless @stations[station_idx].nil?
   end
 
   #Удаление станции из маршрута
-  def edit_route_remove_station (station_idx, route_idx)
+  def edit_route_remove_station
+    puts "Выберите маршрут"
+    print_routes
+    route_idx = gets.chomp.to_i
+    puts "Выберите станцию для удаления"
+    print_stations
+    station_idx = gets.chomp.to_i
     @routes[route_idx].remove_station(@stations[station_idx]) unless @stations[station_idx].nil?
   end
 
   #Удаление маршрута
-  def remove_route (route_idx)
+  def remove_route
+    print_routes
+    print "Выберите маршрут: "
+    route_idx = gets.chomp.to_i
     @routes.delete(@routes[route_idx])
   end
 
