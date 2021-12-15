@@ -5,10 +5,7 @@ class CargoWagon < Wagon
     @type = :cargo
     @type_for_print = "грузовой"
   end
-
   def self.print_type
     "Грузовой"
   end
-
-  public_class_method :new
 end
