@@ -6,6 +6,4 @@ class Wagon
   def initialize
     @hooked = false
   end
-  #Запрещаем создание объекта класса Wagon (вагон может быть только пассажирский или грузовой), вероятно это плохое решение, но попробовал сделать
-  private_class_method :new
 end
