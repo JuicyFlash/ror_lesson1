@@ -7,17 +7,12 @@ module InstanceCounter
 
    module ClassMethods
 
-     def instances_array
-       @@instances_array ||= []
-     end
-
      def instances
        @instances ||= 0
      end
 
-     def add_instance (obj)
+     def add_instance
        @instances = instances + 1
-       instances_array << obj
      end
 
    end
@@ -27,7 +22,7 @@ module InstanceCounter
      private
 
      def register_instance
-       self.class.add_instance (self)
+       self.class.add_instance
      end
 
    end
