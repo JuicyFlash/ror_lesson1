@@ -5,7 +5,6 @@ class Station
 
   attr_reader :name
   attr_reader :trains
-  @instaces = 0
 
   def self.all
     if ObjectSpace.each_object(self).to_a.length == 0

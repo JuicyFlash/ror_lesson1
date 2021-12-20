@@ -14,8 +14,6 @@ class Train
   attr_reader :route
   attr_reader :number
 
-  @instaces = 0
-
   def initialize (number)
     @number = number.to_sym
     @speed = 0

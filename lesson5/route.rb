@@ -3,7 +3,6 @@ class Route
   include InstanceCounter
 
   attr_reader :stations
-  @instaces = 0
 
   def initialize (start_station, end_station)   
     #Сразу делаем массив, который потом будем изменять (добавлять\удалять) 

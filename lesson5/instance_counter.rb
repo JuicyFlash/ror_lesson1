@@ -8,11 +8,12 @@ module InstanceCounter
    module ClassMethods
 
      def instances
-       @instaces
+       @instances
      end
 
      def add_instance
-       @instaces += 1
+       @instances ||= 0
+       @instances += 1
      end
 
    end
