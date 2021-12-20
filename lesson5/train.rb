@@ -22,7 +22,7 @@ class Train
   end
 
   def self.find (number)
-    ObjectSpace.each_object(self).to_a.select { |tr| tr.number == number.to_sym }[0]
+    instances_array.select { |tr| tr.number == number.to_sym }[0]
   end
 
   def print_type

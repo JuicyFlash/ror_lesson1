@@ -7,10 +7,10 @@ class Station
   attr_reader :trains
 
   def self.all
-    if ObjectSpace.each_object(self).to_a.length == 0
+    if instances_array.length == 0
       nil
     else
-      ObjectSpace.each_object(self).to_a
+      instances_array
     end
 
   end
