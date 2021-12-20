@@ -1,17 +1,32 @@
 #Класс Train (Поезд):
+require_relative 'manufacturer_company'
+require_relative 'instance_counter'
+
 class Train
+
+  include ManufacturerCompany
+  include InstanceCounter
+
   attr_reader :speed
   attr_reader :wagons
   attr_reader :current_station
   attr_reader :type
   attr_reader :route
   attr_reader :number
-  
+
+  @instaces = 0
+
   def initialize (number)
-    @number = number
+    @number = number.to_sym
     @speed = 0
     @wagons = []
+    self.register_instance
   end
+
+  def self.find (number)
+    ObjectSpace.each_object(self).to_a.select { |tr| tr.number == number.to_sym }[0]
+  end
+
   def print_type
     if @type == :cargo
       "грузовой"
