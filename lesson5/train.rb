@@ -14,15 +14,18 @@ class Train
   attr_reader :route
   attr_reader :number
 
+  @@instances_array = []
+
   def initialize (number)
     @number = number.to_sym
     @speed = 0
     @wagons = []
+    @@instances_array << self
     self.register_instance
   end
 
   def self.find (number)
-    instances_array.select { |tr| tr.number == number.to_sym }[0]
+    @@instances_array.select { |tr| tr.number == number.to_sym }[0]
   end
 
   def print_type
