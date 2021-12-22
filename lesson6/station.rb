@@ -8,7 +8,8 @@ class Station
 
   @@instances_array = []
 
-  NAME_FORMAT = /^[A-Z0-9]{1}\w+$/
+  # Строчная буква только первая
+  NAME_FORMAT = /^[A-Z0-9]{1}[a-z0-9]+$/
 
   def self.all
     if @@instances_array.length == 0
