@@ -72,14 +72,23 @@ class Railroad
   #Добавление станции
   def add_station
     puts
-    print "Введите название станции: "
-    param_name = gets.chomp
-    unless  @stations.map { |st| st.name }.include?(param_name)
-      @stations << Station.new(param_name)
-      puts"Станция #{param_name} добавлена"
-    else
-      puts "Станция #{param_name} не добавлена - станция с таким названием уже есть"
+    created = false
+    while created == false do
+      print "Введите название станции: "
+      param_name = gets.chomp
+      unless  @stations.map { |st| st.name }.include?(param_name)
+        begin
+          @stations << Station.new(param_name)
+          puts"Станция #{param_name} добавлена"
+          created = true
+        rescue RuntimeError => e
+          puts e.message
+        end
+      else
+        puts "Станция #{param_name} не добавлена - станция с таким названием уже есть"
+      end
     end
+
   end
 
   #Удаление станции
@@ -111,18 +120,35 @@ class Railroad
 
   #Добавление поезда
   def add_train
+    created = false
     print "Укажите типа поезда 0 - грузовой 1 - пассажирский: "
     param_type = gets.chomp.to_i
     puts
-    print "Задайте номер поезда: "
-    param_number = gets.chomp
-    if param_type == 0
-      @trains << CargoTrain.new(param_number)
-    elsif param_type == 1
-      @trains << PassengerTrain.new(param_number)
-    else
-      puts "Некорректно указан тип поезда"
+    while created == false do
+      print "Задайте номер поезда: "
+      param_number = gets.chomp
+      if param_type == 0
+        begin
+        @trains << CargoTrain.new(param_number)
+        created = true
+        puts "Грузвой поезд #{param_number} создан"
+        rescue RuntimeError => e
+          puts e.message
+        end
+      elsif param_type == 1
+        begin
+          @trains << PassengerTrain.new(param_number)
+          created = true
+          puts "Пассажирский поезд #{param_number} создан"
+        rescue RuntimeError => e
+          puts e.message
+        end
+      else
+        puts "Некорректно указан тип поезда"
+      end
     end
+
+
 
   end
 
