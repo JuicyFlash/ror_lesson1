@@ -13,19 +13,30 @@ class Train
   attr_reader :type
   attr_reader :route
   attr_reader :number
+  # 3 символа сначала строки, затем необязательный "-",
+  # Если "-" есть, то после него обязательно должен быть символ, второй символ после "-" необязательный
+  NUMBER_FORMAT = /^([a-z0-9]{3})(\-[a-z0-9]{1}[a-z0-9]{1}?)?$/i
 
   @@instances_array = []
 
   def initialize (number)
-    @number = number.to_sym
+    @number = number
+    validate!
     @speed = 0
     @wagons = []
     @@instances_array << self
     self.register_instance
   end
 
+  def valid?
+    validate!
+  rescue RuntimeError => e
+    puts e.message
+    false
+  end
+
   def self.find (number)
-    @@instances_array.select { |tr| tr.number == number.to_sym }[0]
+    @@instances_array.select { |tr| tr.number == number }[0]
   end
 
   def print_type
@@ -95,6 +106,12 @@ class Train
   #Методы ниже перенесены в protected
   # кмк управление скоростью должно быть инкапсулировано в классе поезд (вероятно переопределены в наследниках)
   # и зависеть от параметров (тип поезда, ограничение скорости на перегоне итд)
+  def validate!
+    raise "Не задан номер поезда" if number.nil?
+    raise "Номер поезда не может быть короче 3х символов" if number.length < 3
+    raise "Некореектно задан формат номера #{NUMBER_FORMAT}" if number !~ NUMBER_FORMAT
+    true
+  end
 
   #Торможение до нуля
   def speed_down
