@@ -34,7 +34,11 @@ class Station
     self.register_instance
     @@instances_array << self
   end
-  
+
+  def each_train
+    @trains.each { |tr| yield(tr) }
+  end
+
   def recive_train (train)
     @trains << train
   end
