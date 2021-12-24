@@ -39,6 +39,10 @@ class Train
     @@instances_array.select { |tr| tr.number == number }[0]
   end
 
+  def each_wagon
+    wagons.each { |wg| yield(wg) }
+  end
+
   def print_type
     if @type == :cargo
       "грузовой"
