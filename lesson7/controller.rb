@@ -54,8 +54,9 @@ class Controller
       puts "Выберите действие"
       puts "0. Добавить"
       puts "1. Список вагонов"
-      puts "2. Удалить"
-      puts "3. Отмена"
+      puts "2. Заполнить вагон"
+      puts "3. Удалить"
+      puts "4. Отмена"
       menu_select = gets.chomp.to_i
       case menu_select
 
@@ -66,8 +67,11 @@ class Controller
       when 1
         #Список вагонов
         @rr.print_wagons
-
       when 2
+        #Заполнение вагона
+        @rr.fill_wagon
+
+      when 3
         # Удаление вагона
         @rr.remove_wagon
 
@@ -100,7 +104,7 @@ class Controller
 
       when 1
         #Список поездов
-        @rr.print_trains
+        @rr.trains_report
 
       when 2
         #Установка маршрута поезду
@@ -148,7 +152,7 @@ class Controller
 
       when 1
         #Список станций
-        @rr.print_stations
+        @rr.report_stations
 
       when 2
         #Список поездов на станции
