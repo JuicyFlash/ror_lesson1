@@ -6,4 +6,5 @@ class PassengerTrain < Train
     super
     @type = :passenger
   end
+
 end
