@@ -39,14 +39,67 @@ class Railroad
       }
   end
 
+  def wagon_info(wg)
+    wg_space_type = "объёма" if wg.type == :cargo
+    wg_space_type = "мест" if wg.type == :passenger
+    print "Номер вагона #{@wagons.index(wg)}, тип #{wg.type_for_print}, доступно #{wg.available_space!} #{wg_space_type}, занято #{wg.unavailable_space!} #{wg_space_type}"
+  end
+
+  def fill_wagon
+    puts "Выберите вагон:"
+    print_wagons
+    wg_idx = gets.chomp.to_i
+    wg =  @wagons[wg_idx]
+    filled = false
+    unless wg.nil?
+      while filled == false do
+        begin
+        if wg.type == :cargo
+          puts "Введите объём"
+          volume =  gets.chomp.to_i
+          wg.fill_space!(volume)
+          puts "Вагон заполнен"
+          wagon_info(wg)
+          filled = true
+        elsif wg.type == :passenger
+          wg.fill_space!
+          puts "Место в вагоне занято"
+          wagon_info(wg)
+          filled = true
+        else
+          puts "Тип вагона не определён"
+          filled = true
+        end
+        rescue RuntimeError => e
+          puts e.message
+        end
+      end
+    end
+
+  end
+
   #Добавление вагона
   def add_wagon
     puts
     print "Укажите типа вагона:   #{print_wagon_types} "
     wag_idx = gets.chomp.to_i
     if !(@available_wagons_types[wag_idx].nil?)
-      @wagons << @available_wagons_types[wag_idx].new
-      puts "#{@available_wagons_types[wag_idx].print_type} вагон добавлен"
+      created = false
+      while created == false do
+        begin
+          puts "Укажите количество мест в вагоне" if @available_wagons_types[wag_idx] == PassengerWagon
+          puts "Укажите объём вагона" if @available_wagons_types[wag_idx] == CargoWagon
+          wagon_param = gets.chomp
+          wg = @available_wagons_types[wag_idx].new(wagon_param)
+          @wagons << wg
+          created = true
+        rescue RuntimeError => e
+          puts e.message
+        end
+      end
+      puts "Добавлен вагон: "
+      wagon_info(wg)
+      puts
     elsif
       puts "Некорректно указан тип вагона"
     end
@@ -58,6 +111,16 @@ class Railroad
     print "Выберите вагон: "
     wag_idx = gets.chomp.to_i
     @wagons.delete(@wagons[wag_idx])
+  end
+  # Список всех станций - поездов - вагонов
+  def report_stations
+    @stations.each do |st| puts "Станция: #{st.name}"
+    puts "Поезда: "
+    st.each_train do |tr|
+      train_info(tr)
+      print_train_wagons(@trains.index(tr))
+    end
+    end
   end
 
   #Список станций
@@ -184,21 +247,31 @@ class Railroad
     end
   end
 
+  def train_info (tr)
+    print"#{@trains.index(tr)}. Номер: #{tr.number}. Тип: #{tr.print_type}. Вагонов в составе: #{tr.wagons.length}"
+  end
+
   #Список поездов
   def print_trains
     puts "Доступные поезда: "
     @trains.each { |tr|
-      print"#{@trains.index(tr)}. Номер: #{tr.number}. Тип: #{tr.print_type}. Вагонов в составе: #{tr.wagons.length}"
+      train_info (tr)
       puts
+      yield(tr) if block_given?
     }
   end
+
+  #Отчёт по поездам - вагонам
+  def trains_report
+    print_trains { |tr| print_train_wagons(@trains.index(tr)) }
+  end
+
   #Список вагонов поезда
   def print_train_wagons (train_idx)
-    @trains[train_idx].wagons.each{|wg|
-      unless trains[train_idx].nil? && trains[train_idx].wagons.length > 0
-      print "#{@wagons.index(wg)}  #{wg.type_for_print}"
+    puts "Вагоны: "
+    @trains[train_idx].each_wagon { |wg|
+      wagon_info(wg)
       puts
-      end
   }
   end
 
@@ -237,7 +310,7 @@ class Railroad
 
   def edit_train_unhook_wagon
     puts "Выберите поезд"
-    print_stations
+    print_trains
     train_idx = gets.chomp.to_i
     puts "Выберите вагон"
     print_train_wagons(train_idx)
@@ -248,7 +321,7 @@ class Railroad
   #Добавление маршрута
   def add_route
     puts "Задайте начальную и конечную станцию маршрута"
-    action_menu_print(:stations)
+    print_stations
     print "Начальная станция:  "
     firs_idx = gets.chomp.to_i
     print "Конечная станция:  "
@@ -296,6 +369,20 @@ class Railroad
       print" #{rt.print_stations}"
       puts
     }
+  end
+
+  def load_test_data
+    @trains << CargoTrain.new("crg-1")
+    @trains << CargoTrain.new("crg-2")
+    @trains << CargoTrain.new("crg-3")
+    @trains << PassengerTrain.new("pas-1")
+    @trains << PassengerTrain.new("pas-2")
+    @trains << PassengerTrain.new("pas-3")
+    5.times {
+      wg = CargoWagon.new("100")
+      @wagons << wg
+      @trains[1].hook_wagon(wg)
+}
   end
 
 end
