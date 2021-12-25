@@ -24,7 +24,11 @@ class Railroad
 
   #Список типов вагонов
   def print_wagon_types
-    @available_wagons_types.each { |wt| print "#{@available_wagons_types.index(wt)}. #{wt.print_type} "}
+    @available_wagons_types.each do |wt|
+      print_type = "Грузовой" if wt == CargoWagon
+      print_type = "Пассажирский" if wt == PassengerWagon
+      print "#{@available_wagons_types.index(wt)}. #{print_type} "
+    end
     puts
   end
 
@@ -32,9 +36,7 @@ class Railroad
   def print_wagons
     puts "Доступные вагоны: "
     @wagons.each { |wg|
-      print"#{@wagons.index(wg)}.#{wg.type_for_print} "
-      print" в сотаве" if wg.hooked
-      print" не в сотаве" unless wg.hooked
+      wagon_info(wg)
       puts
       }
   end
@@ -42,7 +44,9 @@ class Railroad
   def wagon_info(wg)
     wg_space_type = "объёма" if wg.type == :cargo
     wg_space_type = "мест" if wg.type == :passenger
-    print "Номер вагона #{@wagons.index(wg)}, тип #{wg.type_for_print}, доступно #{wg.available_space!} #{wg_space_type}, занято #{wg.unavailable_space!} #{wg_space_type}"
+    hooked_print =  "в сотаве" if wg.hooked
+    hooked_print =  "не в сотаве" unless wg.hooked
+    print "Номер вагона #{@wagons.index(wg)}, тип #{wg.type_for_print}, доступно #{wg.available_space} #{wg_space_type}, занято #{wg.unavailable_space} #{wg_space_type}, #{hooked_print}"
   end
 
   def fill_wagon
@@ -210,9 +214,6 @@ class Railroad
         puts "Некорректно указан тип поезда"
       end
     end
-
-
-
   end
 
   #Установка маршрута поезду
