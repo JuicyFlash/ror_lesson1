@@ -1,10 +1,9 @@
-#Класс PassengerTrain (Грузовой поезд):
+# frozen_string_literal: true
+
+# Класс PassengerTrain (Грузовой поезд):
 class PassengerTrain < Train
-
-
-  def initialize (number)
+  def initialize(number)
     super
     @type = :passenger
   end
-
 end

@@ -1,14 +1,16 @@
-class CargoWagon < Wagon
+# frozen_string_literal: true
 
-  def initialize (volume)
+class CargoWagon < Wagon
+  def initialize(volume)
     @type = :cargo
-    @type_for_print = "грузовой"
+    @type_for_print = 'грузовой'
     super
   end
 
-  def fill_space (count)
-    raise "Занимаемый объём должен бытоь больше 0" if count.to_i <= 0
+  def fill_space(count)
+    raise 'Занимаемый объём должен бытоь больше 0' if count.to_i <= 0
     raise "Недостаточно свобоного объёма. Осталось #{available_space}" if available_space < count
+
     @unavailable_space += count
   end
 
@@ -16,6 +18,6 @@ class CargoWagon < Wagon
 
   def validate!
     super
-    raise "Объём должен быть больше 0" if @total_space <= 0
+    raise 'Объём должен быть больше 0' if @total_space <= 0
   end
 end

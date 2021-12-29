@@ -1,14 +1,13 @@
-#require_relative 'passenger_wagon'
+# frozen_string_literal: true
+
+# require_relative 'passenger_wagon'
 require_relative 'manufacturer_company'
 class Wagon
-
   include ManufacturerCompany
-  attr_reader :unavailable_space
+  attr_reader :unavailable_space, :type, :type_for_print
   attr_accessor :hooked
-  attr_reader :type
-  attr_reader :type_for_print
 
-  def initialize (param)
+  def initialize(param)
     @total_space = param.to_i
     validate!
     @unavailable_space = 0
@@ -16,7 +15,7 @@ class Wagon
   end
 
   def fill_space
-    raise "У нетипизированных вагонов данный метод недоступен"
+    raise 'У нетипизированных вагонов данный метод недоступен'
   end
 
   def available_space
@@ -24,8 +23,8 @@ class Wagon
   end
 
   protected
-  def validate!
-    raise "Запрещено создавать вагоны неопределённого типа" if self.class == Wagon
-  end
 
+  def validate!
+    raise 'Запрещено создавать вагоны неопределённого типа' if instance_of?(Wagon)
+  end
 end
